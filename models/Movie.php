@@ -1,7 +1,7 @@
 <?php
 
-require_once("../connection/connection.php");
-require_once("Model.php");
+require_once(__DIR__ . "/../connection/connection.php");
+require_once(__DIR__ . "/Model.php");
 class Movie extends Model
 {
     private int $id;
