@@ -82,6 +82,15 @@ class User extends Model
         $this->age = $age;
     }
 
-
+    public static function findBy(mysqli $mysqli, string $type, string $auth)
+    {
+        $query = "SELECT * FROM users WHERE $type = ?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("s", $auth);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        return $data ? new static($data) : null;
+    }
 
 }
