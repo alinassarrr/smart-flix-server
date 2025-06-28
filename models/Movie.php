@@ -91,7 +91,6 @@ class Movie extends Model
         $this->duration = $duration;
     }
 
-
     public function toArray()
     {
         return [$this->id, $this->title, $this->description, $this->cover_image, $this->trailer_url, $this->rating, $this->release_date, $this->duration];
