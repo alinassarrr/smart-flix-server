@@ -88,6 +88,4 @@ abstract class Model
 
         return null;
     }
-
-
 }
