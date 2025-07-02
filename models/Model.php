@@ -20,7 +20,7 @@ abstract class Model
     }
 
 
-    public static function find(mysqli $mysqli, int $id) // return single model instance or null
+    public static function find(mysqli $mysqli, int $id) // return single instance or null
     {
         $query = sprintf("SELECT * FROM %s WHERE %s = ?", static::$table, static::$primaryKey);
         $stmt = $mysqli->prepare($query);
@@ -28,7 +28,7 @@ abstract class Model
         $stmt->execute();
         $data = $stmt->get_result()->fetch_assoc();
 
-        return $data ? new static($data) : null; // data have now the assoc array or null if no record
+        return $data ? new static($data) : null; 
     }
 
 
