@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__ . "/Model.php");
-require_once(__DIR__ . "../connection/connection.php");
+require_once(__DIR__ . "/../connection/connection.php");
 
 class Auditorium extends Model
 {
@@ -10,10 +10,10 @@ class Auditorium extends Model
 
     protected static string $table = "auditoriums";
 
-    public function __construct(int $id, string $name)
+    public function __construct(array $data)
     {
-        $this->id = $id;
-        $this->name = $name;
+        $this->id = $data["id"];
+        $this->name = $data["name"];
     }
     public function getId(): int
     {
@@ -35,5 +35,5 @@ class Auditorium extends Model
     {
         return ["id" => $this->id, "name" => $this->name];
     }
-
+  
 }
