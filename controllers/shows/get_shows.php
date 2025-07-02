@@ -2,6 +2,10 @@
 require_once("../../models/Show.php");
 require_once("../../models/Movie.php");
 require_once("../../connection/connection.php");
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
+require_once("../../models/Auditorium.php");
+require_once("../../models/Category.php");
 
 $response = [];
 $response["status"] = 200;
@@ -15,9 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $response["shows"] = [];
             foreach ($shows as $show) {
                 $movie = Movie::find($mysqli, $show->getMovieId());
+                $auditorium = Auditorium::find($mysqli, $show->getauditoriumId());
+                $categories = Category::getMovieCategory($mysqli, $show->getMovieId());
                 $response["shows"][] = [
                     "show" => $show->toArray(),
-                    "movie" => $movie->toArray()
+                    "movie" => $movie->toArray(),
+                    "auditorium" =>$auditorium->toArray(),
+                    "categories"=>$categories,
+                    
                 ];
             }
         } else {
