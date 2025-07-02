@@ -95,4 +95,5 @@ class Movie extends Model
     {
         return ["id" => $this->id, "title" => $this->title, "description" => $this->description, "cover_image" => $this->cover_image, "trailer_url" => $this->trailer_url, "rating" => $this->rating, "release_date" => $this->release_date, "duration" => $this->duration];
     }
+
 }
