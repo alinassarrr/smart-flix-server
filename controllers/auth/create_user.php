@@ -1,5 +1,5 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 require_once("../../connection/connection.php");
 require_once("../../models/User.php");
