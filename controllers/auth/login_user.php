@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
 require_once("../../connection/connection.php");
 require_once("../../models/User.php");
 
@@ -19,13 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if ($verified) {
                 $response["status"] = 200;
                 $response["message"] = "Welcome Back " . $user->getUsername();
+                $response["userID"] = $user->getId();
                 echo json_encode($response);
                 return;
             } else {
                 $response["status"] = 400;
                 $response["message"] = "Invalid Credentials";
                 echo json_encode($response);
-                return;
+              return;
             }
         } else {
             $response["status"] = 400;
