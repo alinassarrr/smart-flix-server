@@ -64,7 +64,7 @@ public function getStartTime(): string{
     "movie_id" => $this->movie_id
     ];
 }
-    public static function findByDate(mysqli $mysqli, string $date):array{
+    public static function findByDate(mysqli $mysqli, string $date ):array{
         $query = "SELECT * FROM shows WHERE show_date = ?";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("s", $date);
@@ -78,4 +78,14 @@ public function getStartTime(): string{
         }
         return [];
     }
+    public static function todayShowsNum( mysqli $mysqli ,string $date):int{
+        $query = "SELECT COUNT(id) FROM shows WHERE show_date = ?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param( "s", $date);
+        $stmt->execute();
+        $result = $stmt->get_result(); // returnd key =>
+        $row = $result->fetch_assoc();
+        return $row["COUNT(id)"];
+    }
+
 }
