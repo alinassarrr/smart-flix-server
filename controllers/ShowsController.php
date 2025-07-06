@@ -43,4 +43,25 @@ class ShowsController extends BaseController{
     BaseController::error_response($e->getMessage());
 }
     }
+    public function numShows(){
+        try{
+            if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $input = json_decode(file_get_contents("php://input"), true);
+    
+    if (isset($input["date"])) {
+        $date = $input["date"];
+        $showsNum = Show::todayShowsNum($this->mysqli, $date);
+        if ($showsNum) {
+            BaseController::success_response($showsNum);
+            return;
+        } else {
+            BaseController::error_response("No shows for today");
+            return;
+        }
+    }
+}
+        }
+        catch (Exception $e) {
+            BaseController::error_response($e->getMessage());}
+    }
 }
