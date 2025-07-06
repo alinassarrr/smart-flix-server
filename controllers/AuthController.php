@@ -48,4 +48,35 @@ class AuthController extends BaseController {
             BaseController::error_response($e->getMessage());
         }
             }
-        }
+
+    public function login(){
+        try{
+            if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $input = json_decode(file_get_contents("php://input"), true);
+            if (isset($input["email"]) && isset($input["password"])) {
+                $email = $input["email"];
+                $password = $input["password"];
+
+                $user = User::findBy($this->mysqli, "email", $email);
+                if ($user) {
+                    $verified = password_verify($password, $user->getPasswordHash());
+                    if ($verified) {
+                       BaseController::success_response($user->getId());
+                        return;
+                    } else {
+                        BaseController::error_response("Invalid Credentials");
+                    return;
+                    }
+                } else {
+                     BaseController::error_response("Invalid Email or Password");
+                    return;
+                }
+            }
+                        }
+                    }
+                    catch(Exception $e) {
+                        BaseController::error_response($e->getMessage());
+                    }
+                }
+
+            }
