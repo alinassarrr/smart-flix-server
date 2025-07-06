@@ -31,8 +31,6 @@ abstract class Model
         return $data ? new static($data) : null; 
     }
 
-
-    // used AI
     public static function create(mysqli $mysqli, array $data)
     {
         $columns = implode(', ', array_keys($data));
@@ -62,30 +60,48 @@ abstract class Model
 
         return $stmt->affected_rows > 0;
     }
-
-    public static function update(mysqli $mysqli, array $data, int $id)
-    {
-        $setClause = implode(' = ?, ', array_keys($data)) . ' = ?';
-
-        $query = sprintf(
-            "UPDATE %s SET %s WHERE %s = ?",
-            static::$table,
-            $setClause,
-            static::$primaryKey
-        );
-
-        $stmt = $mysqli->prepare($query);
-
-        $values = array_values($data);
-        $values[] = $id;
-
-        $types = str_repeat('s', count($values));
-        $stmt->bind_param($types, ...$values);
-
-        if ($stmt->execute()) {
+     public static function update(mysqli $mysqli,array $data,int $id){
+            $columns = [];
+            $params = [];
+            foreach($data as $record => $value){
+                $columns[] = "`$record`=?";
+                $params[] = $value;
+            }
+            $count = count($columns);
+            $columns = implode(", ", $columns);
+            $query = sprintf("UPDATE %s SET %s WHERE id = %s",static::$table,$columns,$id);
+            $stmt= $mysqli->prepare($query);
+            $stmt->bind_param(str_repeat("s", $count), ...$params);
+            $stmt->execute();
+             if ($stmt->execute()) {
             return static::find($mysqli, $id); //get updated record
         }
 
         return null;
-    }
+        }
+    // public static function update(mysqli $mysqli, array $data, int $id)
+    // {
+    //     $setClause = implode(' = ?, ', array_keys($data)) . ' = ?';
+
+    //     $query = sprintf(
+    //         "UPDATE %s SET %s WHERE %s = ?",
+    //         static::$table,
+    //         $setClause,
+    //         static::$primaryKey
+    //     );
+
+    //     $stmt = $mysqli->prepare($query);
+
+    //     $values = array_values($data);
+    //     $values[] = $id;
+
+    //     $types = str_repeat('s', count($values));
+    //     $stmt->bind_param($types, ...$values);
+
+    //     if ($stmt->execute()) {
+    //         return static::find($mysqli, $id); //get updated record
+    //     }
+
+    //     return null;
+    // }
 }
